@@ -1,0 +1,28 @@
+{
+  "name": "jsexcel",
+  "version": "1.0.0",
+  "description": "Создание учебного проекта excel на JS",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vitas810/jsexcel.git"
+  },
+  "keywords": [
+    "js"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vitas810/jsexcel/issues"
+  },
+  "homepage": "https://github.com/Vitas810/jsexcel#readme",
+  "devDependencies": {
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
+  }
+}

@@ -10,6 +10,7 @@ ehthumbs.db
 ehthumbs_vista.db
 .idea/
 node_modules
+dist
 # Dump file
 *.stackdump
 
