@@ -5,8 +5,8 @@
   "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cross-env NODE_ENV=develop webpack",
-    "build": "cross-env NODE_ENV=production webpack --mode production"
+    "start": "webpack",
+    "build": "webpack --mode production"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,6 @@
     "url": "https://github.com/Vitas810/jsexcel/issues"
   },
   "homepage": "https://github.com/Vitas810/jsexcel#readme",
-  "browserslist": "> 0.25%, not dead",
   "devDependencies": {
     "@babel/core": "^7.14.0",
     "@babel/plugin-proposal-class-static-block": "^7.13.11",
