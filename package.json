@@ -21,6 +21,7 @@
     "url": "https://github.com/Vitas810/jsexcel/issues"
   },
   "homepage": "https://github.com/Vitas810/jsexcel#readme",
+  "browserslist": "> 0.25%, not dead",
   "devDependencies": {
     "@babel/core": "^7.14.0",
     "@babel/plugin-proposal-class-static-block": "^7.13.11",
