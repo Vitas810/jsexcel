@@ -15,10 +15,10 @@ export class DomListener {
       if (!this[method]) {
         const name = this.name || '';
         throw new Error(
-          `Method ${method} is not implemented in ${name}`
+          `Method ${method} is not implemented in ${name} Component`
         );
       }
-      this[method] = this[method].bind();
+      this[method] = this[method].bind(this);
       // тоже что и addEventListener
       this.$root.on(listener, this[method]);
     });
