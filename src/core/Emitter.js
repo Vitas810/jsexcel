@@ -1,8 +1,7 @@
- export class Emmitter {
+ export class Emitter {
   constructor(props) {
     this.listeners = {};
   }
-
   // dispatch, fire, trigger
   // уведомляем слушателя если они есть
   emit(event, ...args) {
@@ -28,6 +27,18 @@
   }
 }
 // const emmiter = new Emmitter();
-// emmiter.subscribe('vitas', data => console.log('sub', data));
+// const unsub = emmiter.subscribe('vitas', data => console.log('sub', data));
 //
 // emmiter.emit('vitas', 42);
+//
+// setTimeout(() => {
+//   emmiter.emit('vitas', '2 sec');
+// }, 2000);
+//
+// setTimeout(() => {
+//     unsub();
+// }, 3000);
+//
+//   setTimeout(() => {
+//     emmiter.emit('vitas', '4 sec');
+//   }, 4000);
