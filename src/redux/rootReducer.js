@@ -1,5 +1,10 @@
-import {APPLY_STYLE, CHANGE_STYLES, CHANGE_TEXT, TABLE_RESIZE} from './types';
-import {toInlineStyles} from '../core/utils';
+import {
+  CHANGE_TEXT,
+  CHANGE_STYLES,
+  TABLE_RESIZE,
+  APPLY_STYLE,
+  CHANGE_TITLE,
+} from './types';
 
 export function rootReducer(state, action) {
   let field;
@@ -9,27 +14,31 @@ export function rootReducer(state, action) {
       field = action.data.type === 'col' ? 'colState' : 'rowState';
       return {...state, [field]: value(state, field, action)};
     case CHANGE_TEXT:
+      field = 'dataState';
       return {
         ...state,
         currentText: action.data.value,
-        dataState: value(state, field, action)
+        [field]: value(state, field, action)
       };
     case CHANGE_STYLES:
-      return {...state, currrentStyles: action.data};
+      return {...state, currentStyles: action.data};
     case APPLY_STYLE:
       field = 'stylesState';
       val = state[field] || {};
       action.data.ids.forEach(id => {
-        val[id] = toInlineStyles(action.data.value);
+        val[id] = {...val[id], ...action.data.value};
       });
       return {
         ...state,
         [field]: val,
         currentStyles: {...state.currentStyles, ...action.data.value}
       };
+    case CHANGE_TITLE:
+      return {...state, title: action.data};
     default: return state;
   }
 }
+
 
 function value(state, field, action) {
   const val = state[field] || {};
