@@ -1,5 +1,4 @@
-@import "variables";
-@import "mixins";
+@use 'globals' as *;
 
 .excel__toolbar {
   position: absolute;

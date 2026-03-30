@@ -1,8 +1,8 @@
-import {$} from '@core/Dom';
-import {Emitter} from '../../core/Emitter';
-import {StoreSubscriber} from '../../core/StoreSubscriber';
-import {updateDate} from '../../redux/actions';
-import {preventDefault} from '../../core/utils';
+import { $ } from '@core/Dom';
+import { Emitter } from '../../core/Emitter';
+import { StoreSubscriber } from '../../core/StoreSubscriber';
+import { updateDate } from '../../redux/actions';
+import { preventDefault } from '../../core/utils';
 
 export class Excel {
   constructor(options) {
@@ -18,9 +18,9 @@ export class Excel {
       emitter: this.emitter,
       store: this.store
     };
-    this.components = this.components.map(Component => {
+    this.components = this.components.map((Component) => {
       const $el = $.create('div', Component.className);
-      const component = new Component( $el, componentOptions);
+      const component = new Component($el, componentOptions);
       // // TODO DEBUG
       // if (component.name) {
       //   window['c' + component.name] = component;
@@ -37,11 +37,11 @@ export class Excel {
     }
     this.store.dispatch(updateDate());
     this.subscriber.subscribeComponents(this.components);
-    this.components.forEach(component => component.init());
+    this.components.forEach((component) => component.init());
   }
   destroy() {
     this.subscriber.unsubscribeFromStore();
-    this.components.forEach(component => component.destroy());
+    this.components.forEach((component) => component.destroy());
     document.removeEventListener('contextmenu', preventDefault);
   }
 }

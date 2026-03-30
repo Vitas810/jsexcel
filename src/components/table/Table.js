@@ -1,15 +1,15 @@
-import {ExcelComponent} from '@core/ExcelComponent';
-import {$} from '../../core/Dom';
-import {createTable} from './table.template';
-import {resizeHandler} from './table.resize';
-import {isCell, matrix, nextSelector, shouldResize} from './table.functions';
-import {TableSelection} from './TableSelection';
+import { ExcelComponent } from '@core/ExcelComponent';
+import { $ } from '../../core/Dom';
+import { createTable } from './table.template';
+import { resizeHandler } from './table.resize';
+import { isCell, matrix, nextSelector, shouldResize } from './table.functions';
+import { TableSelection } from './TableSelection';
 import * as actions from '@/redux/actions';
-import {defaultStyles} from '../../constants';
-import {parse} from '../../core/parse';
+import { defaultStyles } from '../../constants';
+import { parse } from '../../core/parse';
 
 export class Table extends ExcelComponent {
-  static className = 'excel__table'
+  static className = 'excel__table';
   constructor($root, options) {
     super($root, {
       name: 'Table',
@@ -28,21 +28,21 @@ export class Table extends ExcelComponent {
     const $cell = this.$root.find('[data-id="0:0"]');
     this.selectCell($cell);
 
-    this.$on('formula:input', value => {
-      this.selection.current
-        .attr('data-value', value)
-        .text(parse(value));
+    this.$on('formula:input', (value) => {
+      this.selection.current.attr('data-value', value).text(parse(value));
       this.updateTextInStore(value);
     });
     this.$on('formula:done', () => {
       this.selection.current.focus();
     });
-    this.$on('toolbar:applyStyle', value => {
+    this.$on('toolbar:applyStyle', (value) => {
       this.selection.applyStyle(value);
-      this.$dispatch(actions.applyStyle({
-        value,
-        ids: this.selection.selectedIds
-      }));
+      this.$dispatch(
+        actions.applyStyle({
+          value,
+          ids: this.selection.selectedIds
+        })
+      );
     });
   }
   selectCell($cell) {
@@ -62,11 +62,12 @@ export class Table extends ExcelComponent {
   onMousedown(event) {
     if (shouldResize(event)) {
       this.resizeTable(event);
-    } else if (isCell) {
+    } else if (isCell(event)) {
       const $target = $(event.target);
       if (event.shiftKey) {
-        const $cells = matrix($target, this.selection.current)
-          .map(id => this.$root.find(`[data-id="${id}"]`));
+        const $cells = matrix($target, this.selection.current).map((id) =>
+          this.$root.find(`[data-id="${id}"]`)
+        );
         this.selection.selectGroup($cells);
       } else {
         this.selectCell($target);
@@ -74,15 +75,8 @@ export class Table extends ExcelComponent {
     }
   }
   onKeydown(event) {
-    const keys = [
-      'Enter',
-      'Tab',
-      'ArrowLeft',
-      'ArrowRight',
-      'ArrowUp',
-      'ArrowDown'
-    ];
-    const {key} = event;
+    const keys = ['Enter', 'Tab', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
+    const { key } = event;
     if (keys.includes(key) && !event.shiftKey) {
       event.preventDefault();
       const id = this.selection.current.id(true);
@@ -91,10 +85,12 @@ export class Table extends ExcelComponent {
     }
   }
   updateTextInStore(value) {
-    this.$dispatch(actions.changeText( {
-      id: this.selection.current.id(),
-      value
-    }));
+    this.$dispatch(
+      actions.changeText({
+        id: this.selection.current.id(),
+        value
+      })
+    );
   }
   onInput(event) {
     this.updateTextInStore($(event.target).text());

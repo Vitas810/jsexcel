@@ -1,4 +1,5 @@
-import {storage} from '../core/utils';
+import { storage } from '../core/utils';
+import { isExcelStorageKey } from '../core/storage.service';
 
 function toHtml(key) {
   const model = storage(key);
@@ -16,9 +17,9 @@ function toHtml(key) {
 
 function getAllKeys() {
   const keys = [];
-  for (let i =0; i < localStorage.length; i++) {
+  for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
-    if (!key.includes('excel')) {
+    if (!key || !isExcelStorageKey(key)) {
       continue;
     }
     keys.push(key);

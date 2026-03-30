@@ -10,13 +10,20 @@ export function range(start, end) {
   if (start > end) {
     [end, start] = [start, end];
   }
-  return new Array(end - start + 1)
-    .fill('')
-    .map((_, index) => start + index);
+  return new Array(end - start + 1).fill('').map((_, index) => start + index);
 }
 export function storage(key, data = null) {
   if (!data) {
-    return JSON.parse(localStorage.getItem(key));
+    const rawValue = localStorage.getItem(key);
+    if (!rawValue) {
+      return null;
+    }
+    try {
+      return JSON.parse(rawValue);
+    } catch (error) {
+      console.warn('Storage parse error', error.message);
+      return null;
+    }
   }
   localStorage.setItem(key, JSON.stringify(data));
 }
@@ -32,12 +39,12 @@ export function camelToDashCase(str) {
 }
 export function toInlineStyles(styles = {}) {
   return Object.keys(styles)
-    .map(key => `${camelToDashCase(key)}: ${styles[key]}`)
+    .map((key) => `${camelToDashCase(key)}: ${styles[key]}`)
     .join(';');
 }
 export function debounce(fn, wait) {
   let timeout;
-  return function(...args) {
+  return function (...args) {
     const later = () => {
       clearTimeout(timeout);
       // eslint-disable-next-line no-invalid-this

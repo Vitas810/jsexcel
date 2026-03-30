@@ -1,8 +1,6 @@
 class Dom {
   constructor(selector) {
-    this.$el = typeof selector === 'string'
-      ? document.querySelector(selector)
-      : selector;
+    this.$el = typeof selector === 'string' ? document.querySelector(selector) : selector;
   }
   html(html) {
     if (typeof html === 'string') {
@@ -57,7 +55,7 @@ class Dom {
     return this.$el.querySelectorAll(selector);
   }
   css(styles = {}) {
-      Object.keys(styles).forEach(key => this.$el.style[key] = styles[key]);
+    Object.keys(styles).forEach((key) => (this.$el.style[key] = styles[key]));
   }
   getStyles(styles = []) {
     return styles.reduce((res, s) => {
@@ -96,7 +94,6 @@ class Dom {
   }
 }
 
-
 export function $(selector) {
   return new Dom(selector);
 }
@@ -108,4 +105,3 @@ $.create = (tagName, classes = '') => {
   }
   return $(el);
 };
-

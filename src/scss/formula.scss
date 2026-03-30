@@ -1,5 +1,4 @@
-@import "variables";
-@import "mixins";
+@use 'globals' as *;
 
 .excel__formula {
   position: absolute;
@@ -11,12 +10,11 @@
   align-items: center;
   border-bottom: 1px solid $border-color;
   & .info {
-      font-size: 18px;
-      text-align: center;
-      font-style: italic;
-      border-right: 1px solid $border-color;
-      min-width: $info-cell-width;
-
+    font-size: 18px;
+    text-align: center;
+    font-style: italic;
+    border-right: 1px solid $border-color;
+    min-width: $info-cell-width;
   }
   & .input {
     padding: 4px;

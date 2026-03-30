@@ -1,6 +1,6 @@
-import {toInlineStyles} from '../../core/utils';
-import {defaultStyles} from '../../constants';
-import {parse} from '../../core/parse';
+import { toInlineStyles } from '../../core/utils';
+import { defaultStyles } from '../../constants';
+import { parse } from '../../core/parse';
 
 const CODES = {
   A: 65,
@@ -18,7 +18,7 @@ function getHeight(state, index) {
 }
 
 function toCell(state, row) {
-  return function(_, col) {
+  return function (_, col) {
     const id = `${row}:${col}`;
     const width = getWidth(state.colState, col);
     const data = state.dataState[id];
@@ -38,7 +38,7 @@ function toCell(state, row) {
   `;
   };
 }
-function toColumn({col, index, width}) {
+function toColumn({ col, index, width }) {
   return `
     <div class="column" 
       data-type="resizable" 
@@ -73,14 +73,16 @@ function toChar(_, index) {
 }
 
 function withWidthFrom(state) {
-  return function(col, index) {
+  return function (col, index) {
     return {
-      col, index, width: getWidth(state.colState, index),
+      col,
+      index,
+      width: getWidth(state.colState, index)
     };
   };
 }
 export function createTable(rowsCount = 15, state = {}) {
-  const colsCount = CODES.Z - CODES.A +1;
+  const colsCount = CODES.Z - CODES.A + 1;
   const rows = [];
   const cols = new Array(colsCount)
     .fill('')
@@ -91,10 +93,7 @@ export function createTable(rowsCount = 15, state = {}) {
   rows.push(createRow(null, cols, {}));
 
   for (let row = 0; row < rowsCount; row++) {
-    const cell = new Array(colsCount)
-      .fill('')
-      .map(toCell(state, row))
-      .join('');
+    const cell = new Array(colsCount).fill('').map(toCell(state, row)).join('');
     rows.push(createRow(row + 1, cell, state.rowState));
   }
   return rows.join('');

@@ -1,6 +1,6 @@
-import {Page} from '../core/Page';
-import {$} from '../core/Dom';
-import {createRecordsTable} from './dashboard.function';
+import { Page } from '../core/Page';
+import { $ } from '../core/Dom';
+import { createRecordsTable } from './dashboard.function';
 
 export class DashboardPage extends Page {
   getRoot() {
@@ -17,7 +17,7 @@ export class DashboardPage extends Page {
             </div>
         </div>
         <div class="db__table db__view">
-            ${ createRecordsTable() }
+            ${createRecordsTable()}
         </div>
     `);
   }

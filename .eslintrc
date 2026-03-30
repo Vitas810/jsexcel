@@ -8,13 +8,16 @@
   },
   "rules": {
     "arrow-parens": "off",
-    "linebreak-style": ["error", "windows"],
+    "linebreak-style": "off",
     "indent": "off",
     "comma-dangle": "off",
     "require-jsdoc": "off",
     "operator-linebreak": "off",
-    "eol-last": "off"
+    "eol-last": "off",
+    "no-var": "error",
+    "prefer-const": "error",
+    "no-eval": "error"
   },
   "plugins": ["jest"],
-  "extends": ["eslint:recommended", "google"]
+  "extends": ["eslint:recommended", "google", "prettier"]
 }

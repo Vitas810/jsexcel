@@ -1,5 +1,4 @@
-@import "variables";
-@import "mixins";
+@use 'globals' as *;
 
 .db {
   &__header {
@@ -79,5 +78,4 @@
       }
     }
   }
-
 }

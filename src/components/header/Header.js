@@ -1,9 +1,10 @@
-import {ExcelComponent} from '@core/ExcelComponent';
-import {$} from '../../core/Dom';
-import {changeTitle} from '../../redux/actions';
-import {defaultTitle} from '../../constants';
-import {debounce} from '../../core/utils';
-import {ActiveRoute} from '../../core/routes/ActiveRoute';
+import { ExcelComponent } from '@core/ExcelComponent';
+import { $ } from '../../core/Dom';
+import { changeTitle } from '../../redux/actions';
+import { defaultTitle } from '../../constants';
+import { debounce } from '../../core/utils';
+import { ActiveRoute } from '../../core/routes/ActiveRoute';
+import { getExcelStorageKey } from '../../core/storage.service';
 
 export class Header extends ExcelComponent {
   static className = 'excel__header';
@@ -40,10 +41,9 @@ export class Header extends ExcelComponent {
     const $target = $(event.target);
 
     if ($target.data.button === 'remove') {
-      const decision = confirm('Вы действительно хотите удалить данную ' +
-        'таблицу ?');
+      const decision = confirm('Вы действительно хотите удалить данную ' + 'таблицу ?');
       if (decision) {
-        localStorage.removeItem('excel:' + ActiveRoute.param);
+        localStorage.removeItem(getExcelStorageKey(ActiveRoute.param));
         ActiveRoute.navigate('');
       }
     } else if ($target.data.button === 'exit') {
