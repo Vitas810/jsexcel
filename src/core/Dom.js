@@ -78,7 +78,7 @@ class Dom {
     return this;
   }
   attr(name, value) {
-    if (value) {
+    if (typeof value !== 'undefined') {
       this.$el.setAttribute(name, value);
       return this;
     }

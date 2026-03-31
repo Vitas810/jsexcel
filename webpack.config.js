@@ -10,7 +10,7 @@ const filename = (ext) => (isDev ? `bundle.${ext}` : `bundle.[contenthash].${ext
 module.exports = {
   context: path.resolve(__dirname, 'src'),
   mode: isProd ? 'production' : 'development',
-  entry: ['@babel/polyfill', './index.js'],
+  entry: ['./index.js'],
   output: {
     filename: filename('js'),
     path: path.resolve(__dirname, 'dist'),

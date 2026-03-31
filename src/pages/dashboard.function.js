@@ -1,36 +1,40 @@
-import { storage } from '../core/utils';
-import { isExcelStorageKey } from '../core/storage.service';
+import { escapeHtml } from '../core/utils';
+import { listExcelTables } from '../core/storage.service';
 
-function toHtml(key) {
-  const model = storage(key);
-  const id = key.split(':')[1];
+/* =============== Подготовка данных таблиц ================ */
+function isValidRecord(model) {
+  return Boolean(model && typeof model.title === 'string' && model.openedDate);
+}
+
+function formatOpenedDate(openedDate) {
+  const date = new Date(openedDate);
+
+  if (Number.isNaN(date.getTime())) {
+    return 'Некорректная дата';
+  }
+
+  return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+}
+
+function toHtml({ id, model }) {
+  if (!isValidRecord(model)) {
+    return '';
+  }
+
   return `
     <li class="db__record">
-      <a href="#excel/${id}">${model.title}</a>
+      <a href="#excel/${escapeHtml(id)}">${escapeHtml(model.title)}</a>
       <strong>
-        ${new Date(model.openedDate).toLocaleDateString()}
-        ${new Date(model.openedDate).toLocaleTimeString()}
+        ${formatOpenedDate(model.openedDate)}
       </strong>
     </li>
   `;
 }
 
-function getAllKeys() {
-  const keys = [];
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    if (!key || !isExcelStorageKey(key)) {
-      continue;
-    }
-    keys.push(key);
-  }
-  return keys;
-}
-
 export function createRecordsTable() {
-  const keys = getAllKeys();
+  const records = listExcelTables().map(toHtml).filter(Boolean);
 
-  if (!keys.length) {
+  if (!records.length) {
     return `<p>Вы пока не создали ни одной таблицы</p>`;
   }
 
@@ -40,7 +44,7 @@ export function createRecordsTable() {
         <span>Дата открытия</span>
     </div>
     <ul class="db__list">
-      ${keys.map(toHtml).join('')}
+      ${records.join('')}
     </ul>
  
   `;

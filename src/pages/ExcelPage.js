@@ -1,24 +1,23 @@
 import { Page } from '../core/Page';
 import { createStore } from '../core/store/createStore';
 import { rootReducer } from '../redux/rootReducer';
-import { debounce, storage } from '../core/utils';
+import { debounce } from '../core/utils';
 import { normalizeInitialState } from '../redux/initialState';
 import { Excel } from '../components/excel/Excel';
 import { Header } from '../components/header/Header';
 import { Toolbar } from '../components/toolbar/Toolbar';
 import { Formula } from '../components/formula/Formula';
 import { Table } from '../components/table/Table';
-import { getExcelStorageKey } from '../core/storage.service';
+import { readExcelTable, writeExcelTable } from '../core/storage.service';
 
 export class ExcelPage extends Page {
   getRoot() {
-    const params = this.params ? this.params : Date.now().toString();
+    const tableId = this.params ? this.params : Date.now().toString();
 
-    const storageKey = getExcelStorageKey(params);
-    const state = storage(storageKey);
+    const state = readExcelTable(tableId);
     const store = createStore(rootReducer, normalizeInitialState(state));
     const stateListener = debounce((state) => {
-      storage(storageKey, state);
+      writeExcelTable(tableId, state);
     }, 300);
 
     this.storeSubscription = store.subscribe(stateListener);

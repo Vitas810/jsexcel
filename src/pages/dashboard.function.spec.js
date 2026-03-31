@@ -1,7 +1,8 @@
 import { createRecordsTable } from './dashboard.function';
+import { writeExcelTable, writeStorageByKey } from '../core/storage.service';
 
 function saveTableRecord(key, model) {
-  localStorage.setItem(key, JSON.stringify(model));
+  writeStorageByKey(key, model);
 }
 
 describe('dashboard.function', () => {
@@ -14,7 +15,7 @@ describe('dashboard.function', () => {
   });
 
   test('рендерит только записи с ключом excel: и игнорирует прочие', () => {
-    saveTableRecord('excel:1', {
+    writeExcelTable('1', {
       title: 'Таблица 1',
       openedDate: '2026-03-30T10:00:00.000Z'
     });
@@ -29,5 +30,19 @@ describe('dashboard.function', () => {
     expect(html).toContain('#excel/1');
     expect(html).not.toContain('Чужая запись');
     expect(html).toContain('db__list-header');
+  });
+
+  test('экранирует title и пропускает битые записи', () => {
+    writeExcelTable('1', {
+      title: '<img src=x onerror=alert(1)>',
+      openedDate: '2026-03-30T10:00:00.000Z'
+    });
+    localStorage.setItem('excel:2', '{"openedDate":"2026-03-30T10:00:00.000Z"}');
+
+    const html = createRecordsTable();
+
+    expect(html).toContain('&lt;img src=x onerror=alert(1)&gt;');
+    expect(html).not.toContain('<img src=x onerror=alert(1)>');
+    expect(html).not.toContain('#excel/2');
   });
 });

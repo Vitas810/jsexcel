@@ -1,3 +1,5 @@
+import { readStorageByKey, writeStorageByKey } from './storage.service';
+
 // Pure function
 
 export function capitalize(string) {
@@ -12,31 +14,43 @@ export function range(start, end) {
   }
   return new Array(end - start + 1).fill('').map((_, index) => start + index);
 }
-export function storage(key, data = null) {
-  if (!data) {
-    const rawValue = localStorage.getItem(key);
-    if (!rawValue) {
-      return null;
-    }
-    try {
-      return JSON.parse(rawValue);
-    } catch (error) {
-      console.warn('Storage parse error', error.message);
-      return null;
-    }
+
+/* =============== Работа с хранилищем ================ */
+export function storage(key, data) {
+  if (arguments.length < 2) {
+    return readStorageByKey(key);
   }
-  localStorage.setItem(key, JSON.stringify(data));
+  writeStorageByKey(key, data);
 }
 
 export function isEqual(a, b) {
-  if (typeof a === 'object' && typeof b === 'object') {
+  if (Object.is(a, b)) {
+    return true;
+  }
+
+  if (a && b && typeof a === 'object' && typeof b === 'object') {
     return JSON.stringify(a) === JSON.stringify(b);
   }
-  return a === b;
+
+  return false;
 }
 export function camelToDashCase(str) {
   return str.replace(/([A-Z])/g, (g) => `-${g[0].toLowerCase()}`);
 }
+
+/* =============== Безопасный вывод строк ================ */
+export function escapeHtml(value = '') {
+  const htmlEntitiesMap = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  };
+
+  return String(value).replace(/[&<>"']/g, (symbol) => htmlEntitiesMap[symbol]);
+}
+
 export function toInlineStyles(styles = {}) {
   return Object.keys(styles)
     .map((key) => `${camelToDashCase(key)}: ${styles[key]}`)

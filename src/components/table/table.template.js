@@ -1,4 +1,4 @@
-import { toInlineStyles } from '../../core/utils';
+import { escapeHtml, toInlineStyles } from '../../core/utils';
 import { defaultStyles } from '../../constants';
 import { parse } from '../../core/parse';
 
@@ -22,6 +22,10 @@ function toCell(state, row) {
     const id = `${row}:${col}`;
     const width = getWidth(state.colState, col);
     const data = state.dataState[id];
+    const displayValue = parse(data);
+    const safeRawValue = typeof data === 'undefined' ? '' : escapeHtml(data);
+    const safeDisplayValue =
+      typeof displayValue === 'undefined' || displayValue === null ? '' : escapeHtml(displayValue);
     const styles = toInlineStyles({
       ...defaultStyles,
       ...state.stylesState[id]
@@ -32,9 +36,9 @@ function toCell(state, row) {
         data-col="${col}"
         data-type="cell"
         data-id="${id}"
-        data-value="${data || ''}"
+        data-value="${safeRawValue}"
         style="${styles}; width: ${width}" 
-      >${parse(data) || ''}</div>
+      >${safeDisplayValue}</div>
   `;
   };
 }
